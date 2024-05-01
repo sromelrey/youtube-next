@@ -1,9 +1,6 @@
 /* eslint-disable @next/next/no-async-client-component */
 "use client";
 import { searchById } from "@/app/lib/actions/data";
-import { useRouter } from "next/navigation";
-
-const { detailed } = require("@/app/lib/placeholder");
 
 export default async function Home({
   searchParams,
