@@ -17,7 +17,7 @@ CLIENT_ID="CLIENT_ID"; // Replace with your YouTube Data API CLIENT_ID key
 
 ```
 ## This app is deployed and running in vercel
-https://youtube-next-fsri.vercel.app/
+https://youtube-next-rho.vercel.app/
 
 ## Folder structure
 .
