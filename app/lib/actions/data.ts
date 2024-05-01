@@ -1,9 +1,32 @@
 import axios from "axios";
-export const searchKeyWord = async (keyWord: string) => {
+const { snippetResponse } = require("../placeholder");
+
+export const searchByKeyWord = async (keyWord?: string) => {
   try {
-    const response = await axios.get<any>(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${keyWord}&key=${process.env.API_KEY}`
+    console.log(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${keyWord}&key=${process.env.API_KEY}`
     );
-    return response.data.items;
-  } catch (error) {}
+    const response = await axios.get<any>(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${keyWord}&key=${process.env.API_KEY}`
+    );
+    const searchResult = response.data.items.map((item: any) => {
+      return {
+        id: item.id.videoId,
+        title: item.snippet.title,
+        description: item.snippet.description,
+      };
+    });
+    return searchResult;
+  } catch (error) {
+    //@ts-ignore
+    console.log(error?.response?.data);
+    //@ts-ignore
+    throw new Error(`${error?.response?.data.error?.message}`);
+  }
+};
+
+export const getPreloadData = () => {
+  const response = snippetResponse;
+
+  return response.items;
 };

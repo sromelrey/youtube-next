@@ -1,117 +1,116 @@
-import Image from 'next/image'
-import { searchKeyWord } from "./lib/actions/data";
+/* eslint-disable @next/next/no-async-client-component */
+"use client";
+import Image from "next/image";
 import Search from "./components/search";
-import Link from "next/link";
-import {
-  MagnifyingGlassCircleIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
 
-export default async function Home() {
-  const videos = await searchKeyWord("Cats");
-  // console.log(fetch);
+import Results from "./components/results";
+import { Suspense } from "react";
+import CardSkeleton from "./components/skeletons";
+import React, { useState } from "react";
+export default function Home() {
+  const [searchKeyWord, setSearchKeyword] = useState("");
+  const [videos, setVideos] = useState([]);
+
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <Search />
-      <div className='youtube-search'>
-        {videos.length > 0 ? (
-          videos.map((item: any) => (
-            <div key={item.id.videoId} className='video-item'>
-              <iframe
-                width='200'
-                height='150'
-                src={`https://www.youtube.com/embed/${item.id.videoId}`}
-                frameBorder='0'
-                allowFullScreen
-              ></iframe>
-              <p>{item.snippet.title}</p>
-            </div>
-          ))
-        ) : (
-          <p>No videos found.</p>
-        )}
-      </div>
+    <>
+      <Search
+        searchKeyWord={searchKeyWord}
+        setSearchKeyword={setSearchKeyword}
+        setVideos={setVideos}
+      />
+      <main className='container mx-auto flex min-h-screen flex-col items-center justify-between px-48 mt-10'>
+        <div className='flex flex-col gap-6 md:w-3/4 sm:w-full'>
+          <Suspense fallback={<CardSkeleton />}>
+            <Results items={videos} />
+          </Suspense>
+        </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className='relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert'
-          src='/next.svg'
-          alt='Next.js Logo'
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className='mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left'>
-        <a
-          href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-          className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
+        <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
+          <h2 className={`mr-2 text-2xl font-semibold`}>
+            <span className='text-red-600'>Youtube</span> Data API Demo with
             <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
               -&gt;
             </span>
           </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          <Image
+            className='relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert'
+            src='/next.svg'
+            alt='Next.js Logo'
+            width={180}
+            height={37}
+            priority
+          />
+        </div>
+        <div className='mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left'>
+          <a
+            href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+            className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <h2 className={`mb-3 text-2xl font-semibold`}>
+              Docs{" "}
+              <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
+                -&gt;
+              </span>
+            </h2>
+            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+              Find in-depth information about Next.js features and API.
+            </p>
+          </a>
 
-        <a
-          href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-          className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+          <a
+            href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
+            className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <h2 className={`mb-3 text-2xl font-semibold`}>
+              Learn{" "}
+              <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
+                -&gt;
+              </span>
+            </h2>
+            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+              Learn about Next.js in an interactive course with&nbsp;quizzes!
+            </p>
+          </a>
 
-        <a
-          href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-          className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+          <a
+            href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+            className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <h2 className={`mb-3 text-2xl font-semibold`}>
+              Templates{" "}
+              <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
+                -&gt;
+              </span>
+            </h2>
+            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+              Explore the Next.js 13 playground.
+            </p>
+          </a>
 
-        <a
-          href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-          className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          <a
+            href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+            className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <h2 className={`mb-3 text-2xl font-semibold`}>
+              Deploy{" "}
+              <span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
+                -&gt;
+              </span>
+            </h2>
+            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+              Instantly deploy your Next.js site to a shareable URL with Vercel.
+            </p>
+          </a>
+        </div>
+      </main>
+    </>
   );
 }
