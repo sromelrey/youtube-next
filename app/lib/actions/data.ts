@@ -16,9 +16,7 @@ export const searchByKeyWord = async (keyWord?: string) => {
     return searchResult;
   } catch (error) {
     //@ts-ignore
-    console.log(error?.response?.data);
-    //@ts-ignore
-    throw new Error(`${error?.response?.data.error?.message}`);
+    return error?.response?.data;
   }
 };
 
