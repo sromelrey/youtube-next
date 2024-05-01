@@ -1,5 +1,6 @@
 ## A  Next.js that use YouTube Data API
 
+
 First, run the development server:
 
 ```bash
@@ -15,6 +16,8 @@ API_KEY="YOUR_API_KEY"; // Replace with your YouTube Data API key
 CLIENT_ID="CLIENT_ID"; // Replace with your YouTube Data API CLIENT_ID key
 
 ```
+## This app is deployed and running in vercel
+https://youtube-next-fsri.vercel.app/
 
 ## Folder structure
 .

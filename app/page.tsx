@@ -20,7 +20,7 @@ export default function Home() {
       />
       <main className='container mx-auto flex min-h-screen flex-col items-center justify-between px-48 mt-10'>
         <div className='flex flex-col gap-6 md:w-3/4 sm:w-full'>
-          {Object.keys(videos.error) ? (
+          {videos.error && Object.keys(videos.error) ? (
             <h1 className='text-2xl'>
               {videos.error.message || "No videos found."}
             </h1>
