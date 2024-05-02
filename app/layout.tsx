@@ -14,10 +14,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
-      <body
-        className={`${inter.className} flex flex-col  px-36 items-center w-full`}
-      >
-          {children}
+      <body className={`${inter.className} flex flex-col  items-center w-full`}>
+        <Search />
+        {children}
       </body>
     </html>
   );

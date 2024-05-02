@@ -1,19 +1,14 @@
+"use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useDebouncedCallback } from "use-debounce";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
-import { searchByKeyWord } from "../lib/actions/data";
+import { searchByKeyWord, staticSearchByKeyWord } from "../lib/actions/data";
 
-export default function Search({
-  searchKeyWord,
-  setSearchKeyword,
-  setVideos,
-}: {
-  searchKeyWord: string;
-  setSearchKeyword: any;
-  setVideos: any;
-}) {
+export default function Search() {
+  const [searchKeyWord, setSearchKeyword] = useState("");
+  const [videos, setVideos] = useState([]);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -29,13 +24,15 @@ export default function Search({
   }, 500);
 
   const handleSubmitSearchKeyword = async () => {
-    const response = await searchByKeyWord(searchKeyWord);
-    setVideos(response);
+    const response = await staticSearchByKeyWord(searchKeyWord);
+    // const response = await searchByKeyWord(searchKeyWord);
+    console.log(response);
+    setVideos(response as []);
   };
 
   return (
-    <div className='mt-4 flex items-center justify-between gap-2 md:mt-8 bg-zinc-900  border-gray-200 py-[9px] text-sm outline-2 placeholder:text-black md:w-2/4 sm:w-full pr-4 rounded-3xl'>
-      <div className='relative flex flex-1 flex-shrink-0'>
+    <div className='mt-4 flex items-center justify-between gap-2  bg-zinc-900  border-gray-200 text-sm outline-2 placeholder:text-black md:w-2/4 sm:w-full pr-4 rounded-3xl'>
+      <div className='relative flex flex-1 flex-shrink-0 h-10'>
         <label htmlFor='search' className='sr-only'>
           Search
         </label>
