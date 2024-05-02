@@ -1,7 +1,12 @@
-import React, { Suspense } from "react";
+/* eslint-disable @next/next/no-async-client-component */
+"use client";
 import CardsResults from "../components/skeletons";
-import { staticSearchByKeyWord } from "../lib/actions/data";
+import { searchByKeyWord, staticSearchByKeyWord } from "../lib/actions/data";
 import Link from "next/link";
+import Search from "../components/search";
+import { Provider } from "react-redux";
+import { Suspense } from "react";
+import MaxQouta from "../components/max-qouta";
 
 export default async function Page({
   searchParams,
@@ -11,8 +16,9 @@ export default async function Page({
   };
 }) {
   const search_query = searchParams?.search_query || "";
-  const results: any = await staticSearchByKeyWord(search_query);
 
+  // const results: any = await staticSearchByKeyWord(search_query);
+  const results: any = await searchByKeyWord(search_query);
   return (
     <div className='flex flex-col gap-8 mt-16'>
       <Suspense fallback={<CardsResults />}>
@@ -46,6 +52,7 @@ export default async function Page({
             </div>
           ))}
       </Suspense>
+      {results?.error?.code === 403 && <MaxQouta />}
     </div>
   );
 }

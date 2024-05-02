@@ -1,33 +1,26 @@
 "use client";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useDebouncedCallback } from "use-debounce";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
-import { searchByKeyWord, staticSearchByKeyWord } from "../lib/actions/data";
+import { staticSearch, staticSearchByKeyWord } from "../lib/actions/data";
+import Link from "next/link";
 
 export default function Search() {
   const [searchKeyWord, setSearchKeyword] = useState("");
-  const [videos, setVideos] = useState([]);
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
+  const router = useRouter();
   const { replace } = useRouter();
 
   const handleSearch = useDebouncedCallback((term: string) => {
-    /*
-     * @Debouncing - is a programming practice that limits the rate
-     *             at which a function can fire. In our case,
-     *             you only want to query the database when the user has
-     *             stopped typing.
-     */
-    setSearchKeyword(`${pathname}?${term.toString()}`);
+    const keyWord = String(term).replace(/\s/g, "+");
+    const params = new URLSearchParams(keyWord);
+
+    setSearchKeyword(keyWord);
   }, 500);
 
-  const handleSubmitSearchKeyword = async () => {
-    const response = await staticSearchByKeyWord(searchKeyWord);
-    // const response = await searchByKeyWord(searchKeyWord);
-    console.log(response);
-    setVideos(response as []);
+  const handleSubmitSearchKeyword = () => {
+    window.location.href = `/results?search_query=${searchKeyWord}`;
   };
 
   return (
@@ -41,10 +34,10 @@ export default function Search() {
           onChange={(e) => {
             handleSearch(e.target.value);
           }}
-          defaultValue={searchParams.get("query")?.toString()}
         />
         <MagnifyingGlassIcon className='absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900' />
       </div>
+
       <button
         onClick={handleSubmitSearchKeyword}
         className='sw-auto justify-center round bg-zinc-900 focus-visible:outline-zinc-500 active:bg-zinc-600 w-auto h-10'

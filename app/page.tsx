@@ -1,17 +1,12 @@
-// @ts-nocheck
-"use client";
-import Image from "next/image";
-import Search from "./components/search";
-
-import Results from "./components/results";
+import React from "react";
 import InitialDisplay from "./components/initialDisplay";
-import { Suspense } from "react";
-import CardSkeleton from "./components/skeletons";
-import React, { useState } from "react";
-import RefactoredPage from "./refactoredpage";
-export default function Home() {
-  const [searchKeyWord, setSearchKeyword] = useState("");
-  const [videos, setVideos] = useState([]);
 
-  return <RefactoredPage />;
+export default function Page() {
+  return (
+    <main className='container mx-auto flex min-h-screen flex-col items-center  px-48 mt-2'>
+      <div>
+        <InitialDisplay />
+      </div>
+    </main>
+  );
 }
