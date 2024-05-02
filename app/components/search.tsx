@@ -1,20 +1,15 @@
 "use client";
-import { useRouter } from "next/navigation";
+
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useDebouncedCallback } from "use-debounce";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
-import { staticSearch, staticSearchByKeyWord } from "../lib/actions/data";
-import Link from "next/link";
 
 export default function Search() {
   const [searchKeyWord, setSearchKeyword] = useState("");
-  const router = useRouter();
-  const { replace } = useRouter();
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const keyWord = String(term).replace(/\s/g, "+");
-    const params = new URLSearchParams(keyWord);
 
     setSearchKeyword(keyWord);
   }, 500);

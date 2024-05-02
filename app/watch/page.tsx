@@ -1,7 +1,6 @@
-import { searchById, searchByKeyWord } from "@/app/lib/actions/data";
+import { searchById } from "@/app/lib/actions/data";
 import VideoPlayer from "../components/player";
-import Link from "next/link";
-import { useState } from "react";
+
 import List from "../results/list";
 import MaxQouta from "../components/max-qouta";
 

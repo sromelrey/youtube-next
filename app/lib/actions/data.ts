@@ -1,10 +1,5 @@
 import axios from "axios";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-const {
-  searchByKeyWordData,
-  searchByIdData,
-} = require("@/app/lib/placeholder");
+
 
 export const searchByKeyWord = async (keyWord?: string) => {
   try {
@@ -61,65 +56,3 @@ export const searchById = async (Id?: string) => {
   }
 };
 
-export const staticSearch = async (keyword: string) => {
-  return new Promise(
-    (resolve, reject) =>
-      setTimeout(() => {
-        console.log(`/results?search_query=${keyword}`);
-        redirect(`/results?search_query=${keyword}`);
-      }, 5000) // 5 seconds timeout
-  );
-};
-
-export const staticSearchByKeyWord = async (keyword: string) => {
-  return new Promise(
-    (resolve, reject) =>
-      setTimeout(
-        () =>
-          resolve(
-            searchByKeyWordData.items.map((data: any) => {
-              // This removes all the extra newlines between sections
-              //@ts-ignore
-              const cleanedString = data.snippet.description.replace(
-                /\n\n+/g,
-                "\n\n"
-              );
-
-              // This joins the cleaned string sections with a single newline
-              const finalString = cleanedString.split("\n").join("\n");
-              return {
-                id: data.id.videoId,
-                title: data.snippet.title,
-                description: finalString,
-              };
-            })
-          ),
-        5000
-      ) // 5 seconds timeout
-  );
-};
-
-export const staticSearchById = (id: string) => {
-  return new Promise((resolve, reject) =>
-    setTimeout(() => {
-      const response = searchByIdData.items.map((data: any) => {
-        // This removes all the extra newlines between sections
-        //@ts-ignore
-        const cleanedString = data.snippet.description.replace(
-          /\n\n+/g,
-          "\n\n"
-        );
-
-        // This joins the cleaned string sections with a single newline
-        const finalString = cleanedString.split("\n").join("\n");
-        return {
-          id: data.id,
-          title: data.snippet.title,
-          description: finalString,
-        };
-      });
-
-      resolve(response[0]);
-    }, 5000)
-  ); // 5 seconds timeout
-};
