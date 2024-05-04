@@ -12,23 +12,20 @@ export default async function Home({
   };
 }) {
   const id = searchParams?.v || "";
-  // console.log({ id });
+
   const response: any = await searchById(id);
 
   return (
     <main className='container mx-auto flex min-h-screen flex-col items-center justify-between px-8 mt-10'>
-      {!!response?.error ? (
-        <div className='container flex flex-row gap-4'>
-          <div className='w-3/4'>
-            <VideoPlayer response={response} />
-          </div>
-          <div className='w-1/4'>
-            <List title={response?.title} />
-          </div>
+      <div className='container flex flex-row gap-4'>
+        <div className='w-3/4'>
+          <VideoPlayer response={response} />
         </div>
-      ) : (
-        <MaxQouta />
-      )}
+        <div className='w-1/4'>
+          <List title={response?.title} />
+        </div>
+      </div>
+      {response?.error?.code === 403 && <MaxQouta />}
     </main>
   );
 }

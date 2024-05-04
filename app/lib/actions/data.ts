@@ -17,8 +17,6 @@ export const searchByKeyWord = async (keyWord?: string) => {
     return {};
   } catch (error) {
     //@ts-ignore
-    console.log({ searchByKeyWord: error?.response?.data });
-    //@ts-ignore
     return error?.response?.data;
   }
 };
@@ -26,11 +24,12 @@ export const searchByKeyWord = async (keyWord?: string) => {
 export const searchById = async (Id?: string) => {
   try {
     const response = await axios.get<any>(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&id="${Id}"&key=${process.env.API_KEY}`
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${Id}&key=${process.env.API_KEY}`
     );
+
     // This removes all the extra newlines between sections
     //@ts-ignore
-    const cleanedString = response.items[0].snippet.description.replace(
+    const cleanedString = response.data.items[0].snippet.description.replace(
       /\n\n+/g,
       "\n\n"
     );
@@ -40,17 +39,15 @@ export const searchById = async (Id?: string) => {
 
     const searchResult = {
       //@ts-ignore
-      id: response.items[0].id.videoId,
+      id: response.data.items[0].id,
       //@ts-ignore
-      title: response.items[0].snippet.title,
+      title: response.data.items[0].snippet.title,
       //@ts-ignore
       description: finalString,
     };
 
     return searchResult;
   } catch (error) {
-    //@ts-ignore
-    console.log({ searchById: error?.response?.data });
     //@ts-ignore
     return error?.response?.data;
   }
